@@ -1,0 +1,11 @@
+{
+  "name": "trashbot",
+  "version": "0.0.1",
+  "description": "A dumb idea.",
+  "main": "main.js",
+  "repository": "",
+  "author": "Matthew Peeks <imgay@6969.orgy>",
+  "dependencies": {
+    "discord.js": "*"
+  }
+}
