@@ -5,7 +5,7 @@ var peeks = 150742441673097217;
 var junk = 161233186423177217;
 
 qc.nudes = function(bot, message, args){
-    bot.sendMessage(message.channel, "https://ide.c9.io/tac0pizza/junkbot");
+    bot.sendMessage(message.channel, "https://github.com/Tac0pizza-z/JunkBot");
 };
 
 qc.toothbrush = function (bot, message, args) {
