@@ -265,15 +265,9 @@ qc.quadratic = function(bot, message, args) {
 qc.mix = function(bot, message, args) {
     function shuffle(array) {
         var currentIndex = array.length, temporaryValue, randomIndex;
-        
-        // While there remain elements to shuffle...
         while (0 !== currentIndex) {
-        
-            // Pick a remaining element...
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex -= 1;
-            
-            // And swap it with the current element.
             temporaryValue = array[currentIndex];
             array[currentIndex] = array[randomIndex];
             array[randomIndex] = temporaryValue;
@@ -406,13 +400,37 @@ qc.kys = function(bot, message, args) {
 qc.spacey = function(bot, message, args) {
     if(args.length != 0){
         var sent = args.join("");
-        var spaces = [];
+        var letters = [];
         for(var i = 0; i < sent.length; i++) {
-            spaces.push(sent[i]);
+            letters.push(sent[i]);
         }
-        bot.sendMessage(message.channel, spaces.join(" "));
+        bot.sendMessage(message.channel, letters.join(" "));
     }else{
         bot.sendMessage(message.channel, "Put a message after using **?spacey**. Ex: **?spacey Hey, JunkBot!**");
+    }
+};
+
+qc.supermix = function(bot, message, args) {
+    if(args.length != 0){
+        var sent = args.join("");
+        var letters = [];
+        for(var i = 0; i < sent.length; i++) {
+            letters.push(sent[i]);
+        }
+        function shuffle(array) {
+            var currentIndex = array.length, temporaryValue, randomIndex;
+            while (0 !== currentIndex) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+            return array;
+        }
+        bot.sendMessage(message.channel, shuffle(letters).join(""));
+    }else{
+        bot.sendMessage(message.channel, "Put a message after using **?supermix**. Ex: **?supermix Hey, JunkBot!**");
     }
 };
 
