@@ -403,4 +403,17 @@ qc.kys = function(bot, message, args) {
     }
 };
 
+qc.spacey = function(bot, message, args) {
+    if(args.length != 0){
+        var sent = args.join("");
+        var spaces = [];
+        for(var i = 0; i < sent.length; i++) {
+            spaces.push(sent[i]);
+        }
+        bot.sendMessage(message.channel, spaces.join(" "));
+    }else{
+        bot.sendMessage(message.channel, "Put a message after using **?spacey**. Ex: **?spacey Hey, JunkBot!**");
+    }
+};
+
 module.exports = qc;
