@@ -684,15 +684,134 @@ commands.shoot = function(bot, message, args) {
     }
 };
 
+var pendingTTT = [];
+var gameStart = false;
+var turn;
+var gameBoard = [{symbol: "   ", occupied: false, row: 1, column: 1}, {symbol: "   ", occupied: false, row: 1, column: 2}, {symbol: "   ", occupied: false, row: 1, column: 3}, {symbol: "   ", occupied: false, row: 2, column: 1}, {symbol: "   ", occupied: false, row: 2, column: 2}, {symbol: "   ", occupied: false,  row: 2, column: 3}, {symbol: "   ", occupied: false, row: 3, column: 1}, {symbol: "   ", occupied: false,  row: 3, column: 2}, {symbol: "   ", occupied: false,  row: 3, column: 3}];
+var symb = "X";
+
+commands.tictactoe = function(bot, message, args) {
+    var sender = message.author.id;
+    var receiver2 = args[0];
+    if (message.mentions.length == 0 || !receiver2.startsWith("<@") || sender == receiver) {
+        //person doesn't mention anyone
+        bot.sendMessage(message.channel, "You need to tag someone to challenge someone or accept a challenge. Ex: **?tictactoe @JunkBot**. Or you challenged yourself.");
+    }else{
+        var receiver1 = receiver2.replace("<@", "");
+        var receiver = receiver1.replace(">", "");
+        //see if ?tic was used to challenge or accept
+        var challengeAccepted = false;
+        for (var i = 0; i < pendingTTT.length; i++) {
+            if(pendingTTT[i].receiver == sender && pendingTTT[i].sender == receiver) {
+                challengeAccepted = true;
+            }
+        }
+        if(!challengeAccepted) {
+            var TTT = {sender: sender, receiver: receiver};
+            pendingTTT.push(TTT);
+            bot.sendMessage(message.channel, "You have challenged " + receiver2 + " to Tic Tac Toe. He can accept it by challenging you to a game or decline it with **?decline**.");
+        }else if(gameStart){
+            bot.sendMessage(message.channel, "There is currently a game going on. Once the game is over you can accept the challenge.");
+        }else{
+            gameStart = true;
+            turn = receiver;
+            bot.sendMessage(message.channel, "Game initiated. " + receiver2 + ", it is your turn. Use **?place** followed by two numbers to place your X. The two numbers represent how far right and then how far down you want to place your piece, starting from **1 1**, which would put your piece in the top left corner.");
+        }
+    }
+};
+
+commands.place = function(bot, message, args) {
+    var sender = message.author.id;
+    var position = [args[0], args[1]];
+    var occupiedBox = false;
+    for(var i = 0; i < gameBoard.length; i++) {
+        if(gameBoard[i].occupied && gameBoard[i].column == position[0] && gameBoard[i].row == position[1]) {
+            occupiedBox = true;
+            break;
+        }
+    }
+    if(!gameStart) {
+        bot.sendMessage(message.channel, "There is currently no game of Tic Tac Toe being played. Use **?tictactoe** followed by a mention to challenge someone.");
+    }else if(sender != turn) {
+        bot.sendMessage(message.channel, "It isn't your turn.");
+    }else if(args.length != 2 || !(parseInt(position[0], 10) < 4) || !(parseInt(position[1], 10) < 4) || !(parseInt(position[0], 10) > 0) || !(parseInt(position[1], 10) > 0)) {
+        bot.sendMessage(message.channel, "You did not enter two numbers that are less than 3");
+    }else if(occupiedBox){
+        bot.sendMessage(message.channel, "That spot is occupied.");
+    }else{
+        for(var j = 0; j < gameBoard.length; j++) {
+            if(position[0] == gameBoard[j].column && position[1] == gameBoard[j].row) {
+                gameBoard[j].symbol = symb;
+                gameBoard[j].occupied = true;
+            }
+        }
+        var win = false;
+        if(gameBoard[0].symbol != "   ") {
+            if((gameBoard[0].symbol == gameBoard[1].symbol && gameBoard[2].symbol == gameBoard[1].symbol) || (gameBoard[0].symbol == gameBoard[3].symbol && gameBoard[3].symbol == gameBoard[6].symbol) || (gameBoard[0].symbol == gameBoard[4].symbol && gameBoard[4].symbol == gameBoard[8].symbol))
+                win = true;
+        }
+        if(gameBoard[2].symbol != "   ") {
+            if((gameBoard[2].symbol == gameBoard[5].symbol && gameBoard[5].symbol == gameBoard[8].symbol) || (gameBoard[2].symbol == gameBoard[4].symbol && gameBoard[4].symbol == gameBoard[6].symbol))
+                win = true;
+        }
+        if(gameBoard[2].symbol != "   ") {
+            if(gameBoard[2].symbol == gameBoard[5].symbol && gameBoard[5].symbol == gameBoard[7].symbol)
+                win = true;
+        }
+        if(gameBoard[3].symbol != "   ") {
+            if(gameBoard[3].symbol == gameBoard[4].symbol && gameBoard[4].symbol == gameBoard[5].symbol)
+                win = true;
+        }
+        if(gameBoard[6].symbol != "   ") {
+            if(gameBoard[6].symbol == gameBoard[7].symbol && gameBoard[7].symbol == gameBoard[8].symbol)
+                win = true;
+        }
+        if(gameBoard[1].symbol != "   ") {
+            if(gameBoard[1].symbol == gameBoard[4].symbol && gameBoard[4].symbol == gameBoard[7].symbol)
+                win = true;
+        }
+        var tie = true;
+        for(var k = 0; k < gameBoard.length; k++) {
+            if(gameBoard[k].symbol == "   ") {
+                tie = false;
+                break;
+            }
+        }
+        var currentBoard = "|" + gameBoard[0].symbol + "|" + gameBoard[1].symbol + "|" + gameBoard[2].symbol + "|\n|" + gameBoard[3].symbol + "|" + gameBoard[4].symbol + "|" + gameBoard[5].symbol + "|\n|" + gameBoard[6].symbol + "|" + gameBoard[7].symbol + "|" + gameBoard[8].symbol + "|";
+        if(win) {
+            bot.sendMessage(message.channel, currentBoard + "\n <@" + turn + "> wins!");
+            gameStart = false;
+        }else if(tie){
+            bot.sendMessage(message.channel, currentBoard + "\n It's a tie");
+            gameStart = false;
+        }else{
+            
+        }
+        if(turn == pendingTTT[0].sender) {
+            turn = pendingTTT[0].receiver;
+        }else{
+            turn = pendingTTT[0].sender;
+        }
+        if(symb == "X") {
+            symb = "O";
+        }else{
+            symb = "X";
+        }
+        
+    }
+};
+
 commands.decline = function(bot, message, args){
     var sender = message.author.id;
     var removeFromPendBat = pendingBattles.indexOf(sender);
     pendingBattles.splice(removeFromPendBat);
     var removeFromPendFight = pendingFights.indexOf(sender);
     pendingFights.splice(removeFromPendFight);
-    bot.sendMessage(message.channel, "You have successfully declined all challenges sent to you");
     var removeFromPendShoot = pendingShootouts.indexOf(sender);
     pendingShootouts.splice(removeFromPendShoot);
+    var removeFromTTT = pendingTTT.indexOf(sender);
+    pendingTTT.splice(removeFromTTT);
+    bot.sendMessage(message.channel, "You have successfully declined all challenges sent to you");
 };
 
 /*
@@ -868,7 +987,6 @@ commands.schedule = function(bot, message, args){
     });
 };
 
-//commands.tuckfrump
 //commands.impquiz
 
 module.exports = commands;
