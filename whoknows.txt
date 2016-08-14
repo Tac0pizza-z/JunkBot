@@ -1,0 +1,142 @@
+ideas for regis rpg
+
+stats:
+attack: how much damage u do
+speed: how fast
+int: charge speed of actives
+flair: how much money you get from performances
+
+main story: trapped by alien race have to fight gauntlet after gauntlet
+some kind of weird king design where the king doesnt want to be king, king changes design every game
+instead of calling the characters "the chef," call them "a chef." adds to idea of char isnt special.
+
+chef: "variety is the spice of life"
+can hold 4 guns, 4 melee, 4 actives
+starts with pastry gun and roller (the chef kind)
+
+archeologist: "Dont drop that!"
+can hold 1 guns, 3 melee, 3 actives
+starts with pickaxe and duct tape
+passive: has increased damage while undamaged in room
+duct tape, combine two guns (see below)
+
+general Andre Anselme: "This is an article of war!"
+can hold 3 guns, 2 melee, 2 actives
+starts with ruler, baseball bat, and cannon
+cant switch ruler or bat
+cannon: shoots a huge bullet, huge damage
+
+scientist Humora: "I made it myself!"
+can hold 4 guns, 0 melee, 2 actives
+starts with makeshift gun and chem bottle
+passive: immune to status effects + creep
+chem bottle: bottle smashes on ground, creates poison creep
+
+theif: "if its not taped down...":
+can hold 1 gun, 1 melee, 1 active
+starts with silenced pistol and butterfly knife
+cheaper items
+very low flair
+
+butler (is a robot): "built to please"
+can hold 3 guns, 1 melee, 2 actives
+starts with cane and tea cup
+tea cup: same as chem bottle
+passive: immune to creep (cleans it up)
+
+amatrucola: special move: SHoots a laser made of the words "System.out.println("And now you may leave");"
+
+ALL AROUND: Artist, Debater
+MELEE: Athlete, Chef
+RANGED: General, Musician
+SPECIAL: Scientist, Coder
+
+secret unlockable: junkbot
+random stats and starting items
+
+secret unlockable: The Owner
+
+tutorial: studybot
+
+shops: potentially undertale style
+
+diff shops:
+ducca: slot machine, pay money get items (random)
+andre: sells baseball cards, kinda pricy but increase one or two stats randomly
+
+items:
+film about bees "why tho?": passive: bees come out and distract enemies
+air parrot "never really works": passive: 1/5 rooms will be frozen for a few seconds
+echo "echo": passive: copy of yourself on the other side of the screen, has one hit and respawns every room
+shootout "Draw!": passive: getting the first hit on an enemy will prevent it from shooting for a bit
+shout "SHOUT": active: creates a large copy of yourself for a limited time, does double damage
+respec "?respec random": active: +1 in all stats, 
+the penny "an omen of whats to come": active: 50% chance next room is easier, 50% its harder
+slam jelly "tastes like basketball": passive: speed up
+the spider "dont burn it": passive: all stats up until you get hurt for the first time in a room
+pencil "lead poisoning": passive: some hits poision
+John-omb "BOOM!": active: drops bombs all around the room
+birb "a real cutie-pie": passive: flies around the room pecking enemies
+dedidated wam "how much of it do you really need": passive: speed up, can get unlimited of them (item pedestal)
+conti's coat "you feel smarter": passive: hp up
+Math Textbook "its kinda heavy": speed down, int up
+Wheelock "filled with knowledge, but at a cost": large speed down, int and hp up
+ink gun: weapon: if standing on ink and right click on ink, will teleport to ink
+skell: replaces everything with some skell related things, not sure what yet tho
+finger guns: "may as well tickle the enemy" gun: fucking suck, unlimited ammo
+mount and blade: only gun is bow, cant replace, gain sword weapon
+dat boi: "oh shit waddup" speed boost, projectile speed up
+tomato gun: "Get off the stage!" 1 shot, aoe
+rat suit: "gross" stand still for a while, gain invincibility (tanooki suit)
+rose: "charming" melee, can charm
+junk: "one man's trash...", give to peeks for special reward
+corruption: "power with a cost", all stats up, take a half heart of damage every minute
+saw: "divide and conquer", saw yourself in half (hitbox half as big), -1 heart, both pieces take damage, second half does same thing as first half (mirrored)
+Magic Missle: "I'm outta mana", aoe, long reload, same ammo as in vid
+Undying Spear: "NGAHHH!", can hit bullets (no reflect)
+? gun "jack of all trades, master of none", shoots a random projectile, no reload (compensation)
+confetti cannon: "Happy birthday!", shoots lots of projectiles, one shot
+sunglasses: "cool" flair +
+glasses: "nerd" int +
+roller skates: "kinda hard to use" speed +, floor becomes slippery
+spider egg: "ITS HATCHING" 3 friendly spiders, permanent
+foam beak: "one of them" flair+
+cartrage belt: "holds all projectiles" ammo capacity+
+duct tape: "thisll do" one time use, combine two guns, shoot both at same time
+pillow: "what are you? 12?" kinda weak
+the bible: "who brought this here?" idk
+beer: "dont drink and fight giant aliens" flair+ every time used, every time drink 50% chance to lose a heart, 10% chance to become addicted, have to drink excessively, no more flair bonus, cant replace active
+dessert eagle: "tasty"
+master's sword: "You really shouldnt be out here by yourself": blashemy from gungeon
+dragon's katana: "some cyborg once used this" reload boosts you forward to the mouse cursur
+flamethrower: "w + m1" like flamethrower in like any other game ya idiot
+the green missile: "sometimes misfires" 10 shot clip, 1 is a misfire that travels rlly fast and does more damage or just 10% chance to misfire
+the pheonix: "go out in a blaze" gives you a pheonix heart, once u reach it you lose all heart containers and get lots of damage maybe a fire effect or something
+alien egg: "dont break it" egg, have to protect it, hatches into something like wolf from gungeon
+golden pistol: "Pop pop" right click shoots 2 bullets
+decoy: "looks just like you!" put down, enemies focus on it instead of you (maybe blows up?)
+shovel: "good for digging" can destroy walls, looks like shovel knight's shovel (melee or active, not sure)
+mother's knife: "instrument of sacrafice" just mom's knife from BoI
+honey comb: "Don't shake it" bee hive from gungeon
+siIva Gun: "GRANDDAD" 420 bullets, alt between 6 and 9 clip size
+coconut gun: "fires in spurts" idk something like in dk64
+relentless blade: "bloodthirsty" wont stop swinging
+b-class gloves: one punch man reference, short range, fast fire rate, high damage, red gloves
+
+combat: GUNGEON STYLE BABY
+
+skins for chars after u beat the game with them:
+scientist: plague doctor
+
+enemies: imprisioned aliens, alien spiders
+
+donate to stores to unlock other characters
+pick new name every game
+
+bosses:
+traitor king: some kind of chess boss, play on chess board and a bunch of pieces move around and attack you
+sandworm: like larry junior combined with pin
+twins: 2 seperate entities, one gets mad after the other dies
+cyclops: have to attack the eye, very tanky
+final boss: Phase for every character
+final final boss: your last winning run

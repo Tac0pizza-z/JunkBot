@@ -7,13 +7,6 @@ adj.find().toArray(function(err, result) {
     console.log(result);
 });
 
-var bird = db.collection("bird");
-
-bird.find().toArray(function(err, result) {
-    if (err) throw err;
-    console.log(result);
-});
-
 var idle = db.collection("idle");
 
 idle.find().toArray(function(err, result) {
@@ -45,13 +38,6 @@ noun.find().toArray(function(err, result) {
 var battle = db.collection("battle");
 
 battle.find().toArray(function(err, result) {
-    if (err) throw err;
-    console.log(result);
-});
-
-var junk = db.collection("junk");
-
-junk.find().toArray(function(err, result) {
     if (err) throw err;
     console.log(result);
 });

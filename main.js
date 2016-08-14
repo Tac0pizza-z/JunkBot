@@ -1,29 +1,30 @@
 var Discord = require("discord.js");
 var bot = new Discord.Client();
 
-// Store all the commands from commands.js in a variable
+//store all the commands from dbcommands.js and quickcommands.js in a variable
 var dbcomm = require("./dbcommands");
 var qcomm = require("./quickcommands");
-// Prefix that all commands must start with
+//commands start w/ this
 var commandPrefix = "?";
 
 function handleCommand(message) {
 	
-	// Easy access to text of the message
+	//text of message
 	var content = message.content.trim(); 
 		
-	// Split up the text of the message by " "  
+	//split text using " "  
 	var parts = content.split(" ");
 	
-	// Get rid of the first part (the command name)
+	//message w/o command name
 	var args = parts.slice(1, parts.length);
 	
-	// Take the first part (the command name)
+	//just command name
 	var command = parts[0].replace(commandPrefix, ""); 
 	
+	//show what command was done by who in which room, followed by full content of the message
 	console.log(command + " command by " + message.author.username + " in room " + message.channel.name + ": '"+content+"'");
 	
-	// See if a function for this command exists in the command object (from commands.js)
+	//check if command exists
 	if(dbcomm[command] != undefined){
 		dbcomm[command](bot, message, args);
 	}else if(qcomm[command] != undefined){
@@ -36,9 +37,11 @@ var db = require('mongoskin').db('mongodb://localhost:27017/junkbot');
 var usedb = db.collection("use");
 
 bot.on("message", function(message) {
-	// Check if message is command and wasnt by becue
-	if(message.content.startsWith(commandPrefix) && message.author.id != 151388660007305216) {
+	// Check if message is command
+	//bot.sendMessage(message.channel, "<@151416613969723392>");
+	if(message.content.startsWith(commandPrefix)) {
 		handleCommand(message);
+		//add one to the use
 		usedb.find().toArray(function(err, useArray) {
 			if (err) throw err;
 			var currentUse = parseInt(useArray[0].use, 10);

@@ -1,6 +1,6 @@
 var commands = {};
 
-//make my fuckin databases actually work
+//make my databases work
 var db = require('mongoskin').db('mongodb://localhost:27017/junkbot');
 
 var noundb = db.collection("noun");
@@ -23,13 +23,7 @@ var semidb = db.collection("semi");
 
 var usedb = db.collection("use");
 
-var polldb = db.collection("poll");
-
 var classdb = db.collection("class");
-
-//junk and my id numbers
-var peeks = 150742441673097217;
-var junk = 161233186423177217;
 
 commands.help = function(bot, message, args) {
     var help = [];
@@ -67,7 +61,7 @@ commands.addmeme = function(bot, message, args) {
 
 commands.meme = function(bot, message, args) {
     if(message.channel.server.name == "Regis Discord"){
-        if(message.channel.name == "memes"){
+        if(message.channel.name == "recreation" || message.channel.name == "memes"){
             memedb.find().toArray(function(err, memeArray) {
                 if (err) throw err;
                 var random = Math.floor(Math.random() * memeArray.length);
@@ -210,7 +204,7 @@ commands.joinbattle = function(bot, message, args) {
 
 //array of pending battles
 var pendingBattles = [];
-
+//note: all similar commands have the same code as this one. If you are confused about some of the games, check here for comments
 commands.battle = function(bot, message, args) {
     //set vars for challenger and challenged
     var sender = message.author.id;
@@ -685,7 +679,7 @@ commands.shoot = function(bot, message, args) {
 };
 
 var pendingTTT = [];
-var gameStart = false;
+var gameStartTTT = false;
 var turn;
 var gameBoard = [{symbol: "   ", occupied: false, row: 1, column: 1}, {symbol: "   ", occupied: false, row: 1, column: 2}, {symbol: "   ", occupied: false, row: 1, column: 3}, {symbol: "   ", occupied: false, row: 2, column: 1}, {symbol: "   ", occupied: false, row: 2, column: 2}, {symbol: "   ", occupied: false,  row: 2, column: 3}, {symbol: "   ", occupied: false, row: 3, column: 1}, {symbol: "   ", occupied: false,  row: 3, column: 2}, {symbol: "   ", occupied: false,  row: 3, column: 3}];
 var symb = "X";
@@ -710,10 +704,10 @@ commands.tictactoe = function(bot, message, args) {
             var TTT = {sender: sender, receiver: receiver};
             pendingTTT.push(TTT);
             bot.sendMessage(message.channel, "You have challenged " + receiver2 + " to Tic Tac Toe. He can accept it by challenging you to a game or decline it with **?decline**.");
-        }else if(gameStart){
+        }else if(gameStartTTT){
             bot.sendMessage(message.channel, "There is currently a game going on. Once the game is over you can accept the challenge.");
         }else{
-            gameStart = true;
+            gameStartTTT = true;
             turn = receiver;
             bot.sendMessage(message.channel, "Game initiated. " + receiver2 + ", it is your turn. Use **?place** followed by two numbers to place your X. The two numbers represent how far right and then how far down you want to place your piece, starting from **1 1**, which would put your piece in the top left corner.");
         }
@@ -730,7 +724,7 @@ commands.place = function(bot, message, args) {
             break;
         }
     }
-    if(!gameStart) {
+    if(!gameStartTTT) {
         bot.sendMessage(message.channel, "There is currently no game of Tic Tac Toe being played. Use **?tictactoe** followed by a mention to challenge someone.");
     }else if(sender != turn) {
         bot.sendMessage(message.channel, "It isn't your turn.");
@@ -755,7 +749,7 @@ commands.place = function(bot, message, args) {
                 win = true;
         }
         if(gameBoard[2].symbol != "   ") {
-            if(gameBoard[2].symbol == gameBoard[5].symbol && gameBoard[5].symbol == gameBoard[7].symbol)
+            if(gameBoard[2].symbol == gameBoard[5].symbol && gameBoard[5].symbol == gameBoard[8].symbol)
                 win = true;
         }
         if(gameBoard[3].symbol != "   ") {
@@ -780,12 +774,16 @@ commands.place = function(bot, message, args) {
         var currentBoard = "|" + gameBoard[0].symbol + "|" + gameBoard[1].symbol + "|" + gameBoard[2].symbol + "|\n|" + gameBoard[3].symbol + "|" + gameBoard[4].symbol + "|" + gameBoard[5].symbol + "|\n|" + gameBoard[6].symbol + "|" + gameBoard[7].symbol + "|" + gameBoard[8].symbol + "|";
         if(win) {
             bot.sendMessage(message.channel, currentBoard + "\n <@" + turn + "> wins!");
-            gameStart = false;
+            gameStartTTT = false;
+            symb = "X";
+            gameBoard = gameBoard = [{symbol: "   ", occupied: false, row: 1, column: 1}, {symbol: "   ", occupied: false, row: 1, column: 2}, {symbol: "   ", occupied: false, row: 1, column: 3}, {symbol: "   ", occupied: false, row: 2, column: 1}, {symbol: "   ", occupied: false, row: 2, column: 2}, {symbol: "   ", occupied: false,  row: 2, column: 3}, {symbol: "   ", occupied: false, row: 3, column: 1}, {symbol: "   ", occupied: false,  row: 3, column: 2}, {symbol: "   ", occupied: false,  row: 3, column: 3}];
         }else if(tie){
             bot.sendMessage(message.channel, currentBoard + "\n It's a tie");
-            gameStart = false;
+            gameStartTTT = false;
+            symb = "X";
+            gameBoard = gameBoard = [{symbol: "   ", occupied: false, row: 1, column: 1}, {symbol: "   ", occupied: false, row: 1, column: 2}, {symbol: "   ", occupied: false, row: 1, column: 3}, {symbol: "   ", occupied: false, row: 2, column: 1}, {symbol: "   ", occupied: false, row: 2, column: 2}, {symbol: "   ", occupied: false,  row: 2, column: 3}, {symbol: "   ", occupied: false, row: 3, column: 1}, {symbol: "   ", occupied: false,  row: 3, column: 2}, {symbol: "   ", occupied: false,  row: 3, column: 3}];
         }else{
-            
+            bot.sendMessage(message.channel, currentBoard);
         }
         if(turn == pendingTTT[0].sender) {
             turn = pendingTTT[0].receiver;
@@ -801,6 +799,93 @@ commands.place = function(bot, message, args) {
     }
 };
 
+var pendingPP = [];
+var gameStartPP = false;
+var hitter;
+var hits = 0;
+var time = 1;
+var ping = false;
+var pong = false;
+
+commands.pingpong = function(bot, message, args) {
+    var sender = message.author.id;
+    var receiver2 = args[0];
+    if (message.mentions.length == 0 || !receiver2.startsWith("<@") || sender == receiver) {
+        //person doesn't mention anyone
+        bot.sendMessage(message.channel, "You need to tag someone to challenge someone or accept a challenge. Ex: **?pingpong @JunkBot**. Or you challenged yourself.");
+    }else{
+        var receiver1 = receiver2.replace("<@", "");
+        var receiver = receiver1.replace(">", "");
+        //see if ?pingpong was used to challenge or accept
+        var challengeAccepted = false;
+        for (var i = 0; i < pendingPP.length; i++) {
+            if(pendingPP[i].receiver == sender && pendingPP[i].sender == receiver) {
+                challengeAccepted = true;
+            }
+        }
+        if(!challengeAccepted) {
+            var PP = {sender: sender, receiver: receiver};
+            pendingPP.push(PP);
+            bot.sendMessage(message.channel, "You have challenged " + receiver2 + " to ping pong. He can accept it by challenging you to a game or decline it with **?decline**.");
+        }else if(gameStartPP){
+            bot.sendMessage(message.channel, "There is currently a game going on. Once the game is over you can accept the challenge.");
+        }else{
+            gameStartPP = true;
+            hitter = receiver;
+            bot.sendMessage(message.channel, "Game initiated. " + receiver2 + ", it is your turn. Use **?ping** to start. <@" + sender + "> will then have a limited amount of time to respond with **?pong**. You then have a shorter amount of time to say **?ping**, and the process continues until someone does not say their command in time.");
+        }
+    }
+};
+
+commands.ping = function(bot, message, args) {
+    if(!gameStartPP) {
+        bot.sendMessage(message.channel, "There is no game of pingpong being played.");
+    }else if(message.author.id != hitter) {
+        bot.sendMessage(message.channel, "You have to say **?pong**");
+    }else{
+        hits++;
+        if(hitter == pendingPP[0].sender) {
+            hitter = pendingPP[0].receiver;
+        }else{
+            hitter = pendingPP[0].sender;
+        }
+        ping = true;
+        pong = false;
+        setTimeout(function() {
+            if(!pong && gameStartPP){
+                bot.sendMessage(message.channel, "<@" + hitter + "> was too slow! You lose! The rally was " + hits + " hits long.");
+                gameStartPP = false;
+                time = 1;
+            }
+        }, (30000 / time));
+    }
+};
+
+commands.pong = function(bot, message, args) {
+    if(!gameStartPP) {
+        bot.sendMessage(message.channel, "There is no game of pingpong being played.");
+    }else if(message.author.id != hitter) {
+        bot.sendMessage(message.channel, "You have to say **?ping**");
+    }else{
+        hits++;
+        if(hitter == pendingPP[0].sender) {
+            hitter = pendingPP[0].receiver;
+        }else{
+            hitter = pendingPP[0].sender;
+        }
+        ping = false;
+        pong = true;
+        time++;
+        setTimeout(function() {
+            if(!ping && gameStartPP){
+                bot.sendMessage(message.channel, "<@" + hitter + "> was too slow! You lose! The rally was " + hits + " hits long.");
+                gameStartPP = false;
+                time = 1;
+            }
+        }, (30000 / time));
+    }
+};
+
 commands.decline = function(bot, message, args){
     var sender = message.author.id;
     var removeFromPendBat = pendingBattles.indexOf(sender);
@@ -811,81 +896,105 @@ commands.decline = function(bot, message, args){
     pendingShootouts.splice(removeFromPendShoot);
     var removeFromTTT = pendingTTT.indexOf(sender);
     pendingTTT.splice(removeFromTTT);
+    var removeFromPP = pendingPP.indexOf(sender);
+    pendingPP.splice(removeFromPP);
     bot.sendMessage(message.channel, "You have successfully declined all challenges sent to you");
 };
 
-/*
-commands.startpoll = function(bot, message, args) {
-    if(args[0] != undefined && !isNaN(args[0]) && parseInt(args[0], 10) > 0 && parseInt(args[0], 10) <= 5){
-        bot.sendMessage(message.channel, "A poll has now begun! Use **?pollresults** followed by the name of the poll for the results.");
-        var pollStarter = message.sender.id;
-        polldb.insert({name: args[1], sender: pollStarter}, function(err, result) {if (err) throw err;});
-        for(var i = 0; i < args[0]; i++){
-            var optNumber = i + 1;
-            var insertedOpt = "Option " + optNumber;
-            
+var word;
+var gameStartHM = false;
+var wordProgress = [];
+var missedLetters = [];
+
+commands.hangman = function(bot, message, args) {
+    if(!gameStartHM) {
+        var words = ["misdeliver", "adhere", "committed", "fructification", "shieldless", "epimerising", "disembark", "frederigo", "sangraal", "vorticism", "expendability", "glomeration", "sculpt", "daredeviltry", "proabsolutist", "guadalcanal", "multifid", "nonanatomical", "dazing", "pseudaxis", "uraemia", "obviously", "halitosis", "pretoken", "licence", "cleanhandedness", "viminal", "burgher",
+        "weaner", "kalgan", "sacramental", "szechwan", "capitalizer", "inspection", "sambhar", "conterminal", "coppersmith", "instrumentation", "unrenunciable", "currie", "treelined", "parl", "wiring", "romanism", "catchpolery", "suffolk", "unmould", "precerebellar", "precongratulated", "exultation", "avowedness", "geographer", "antiferromagnetic", "unpranked", "filamentous", "nucleation",
+        "demagogue", "auxanometer", "animater", "uncushioned", "decortization", "phenetidine", "atticised", "nightjar", "bayberry", "reluctancy", "kampala", "deceased", "hearse", "interlope", "philomena", "ineffableness", "bondservant", "complication", "nontriviality", "decarbonise", "gerda", "cognizably", "plastron", "andrsy", "shrinking", "gonof", "nonprolix", "scottdale",
+        "eudist", "snubbing", "limper", "dialectics", "preilluminate", "nonacceptation", "dependant", "volpone", "overslack", "insistently", "antitype", "treasure", "semioptimistically", "virtuous", "redstone", "aschaffenburg", "garpike", "capella", "underskin", "subvitalized", "undefeatable", "elver", "transmutual", "orland", "interseminating", "blackguard", "biophysical", "jasper",
+        "unadoptive", "limonitic", "embracement", "tableau", "nonemanant", "pelles", "massacre", "giglet", "cear", "metaphrastical", "sestertium", "interdiffusive", "vitiate", "provisioner", "reno", "politburo", "breezy", "supernumerous", "subdepressed", "nontransient", "meteor", "laurasia", "whisht", "bibulously", "immaculacy", "sensitiveness", "utilitarian", "intersystem",
+        "antifrictional", "squinch", "reproachableness", "prewilling", "logroo", "preoutlined", "calculably", "dautie", "demantoid", "ygerne", "soliloquise", "darogha", "acceleration", "plath", "predominated", "fishes", "anharmonic", "resettle", "yuzovka", "superproduced", "toddler", "pedal", "trivial", "stalinist", "diarrheic", "amoebalike", "palearctic", "boggle",
+        "infallible", "geoisotherm", "insignificance", "cordilleras", "gangboard", "beechy", "stenohaline", "gastralgia", "swishiest", "rattigan", "cappie", "caractacus", "flatuses", "diphthongise", "preexpense", "perspicuity", "unexpurgated", "agglomeration", "vectorially", "precipitately", "establisher", "tenantable", "clever", "circulated", "concelebrate", "gibing", "outstriding",
+        "lacrimal", "reappraised", "chavannes", "prewelcome", "alchemized", "verve", "sheenies", "tyler", "mayakovsky", "larvicide", "introrse", "perfoliate", "heroicity", "verwanderung", "mistral", "unattacked", "posthoc", "preemotion", "carbonylating", "grattoir", "spinosity", "leprosy", "goodman", "diaghilev", "expositively", "meanie", "robina",
+        "entryway", "redecide", "vernalization", "lotting", "unattentive", "faculty", "accusal", "verse", "uncleanness", "dilution", "molybdic", "falstaff", "transexperiential", "benzoate", "segregational", "friezing", "segmentate", "machaira", "oca", "refractedness", "feodality", "collectivity", "neurilemmatic", "alghero", "errable", "orphanhood", "unpreparedly", "caseworm",
+        "trivially", "allowed", "gloweringly", "emasculator", "unshotted", "seaware", "dandiacal", "clavier", "spandau", "lacrymatory", "enwomb", "composedly", "wardroom", "gastrostomy", "sledge", "interpreter", "frondizi", "growable", "ghostwrite", "decolonising", "shapen", "citron", "stenciller", "subclavian", "whare", "hippophagy", "japonica", "scribe",
+        "watchout", "postfoetal", "dorchester", "bertoia", "clownishly", "froglike", "stirringly", "benot", "relatable", "canaletto", "forte", "reactionist", "setscrew", "unrepealable", "gaon", "inclination", "scheherazade", "australopithecus", "uncanonisation", "underfloor", "dilapidated", "unslung", "offertorial", "tabby", "undermade", "unfaithful", "rabidly", "dreams"];
+        var rand = Math.floor(Math.random() * words.length);
+        word = words[rand];
+        gameStartHM = true;
+        for(var i = 0; i < word.length; i++) {
+            wordProgress.push("-");
         }
+        bot.sendMessage(message.channel, "The game has now started! You are allowed to make 8 mistakes. You currently have made " + missedLetters.length + " mistakes. Current progress:\n" + wordProgress.join(""));
     }else{
-        bot.sendMessage(message.channel, "Please put the number of options you would like the poll to have, then a one word name for the poll, then a description of the poll if you would like.");
+        bot.sendMessage(message.channel, "There is currently a game going on. Please wait until the previous one is over before starting a new one.");
     }
 };
 
-commands.vote = function(bot, message, args) {
-    var sender = message.author.id;
-    var repeatVote = false;
-    var vote;
-    if(args[0] != undefined) {
-        vote = parseInt(args[0], 10) - 1;
+commands.guess = function(bot, message, args) {
+    if(!gameStartHM) {
+        bot.sendMessage(message.channel, "There is no game of hangman being played right now.");
+    }else if(args[0] == undefined) {
+        bot.sendMessage(message.channel, "That is not a valid guess.");
+    }else if(args[0].length != 1) {
+        bot.sendMessage(message.channel, "That is not a valid guess.");
     }else{
-        vote = -10;
-    }
-    for(var i = 0; i < alreadyVoted.length; i++) {
-        if (alreadyVoted[i].voter == sender)
-            repeatVote = true;
-    }
-    if(!currentPoll) {
-        bot.sendMessage(message.channel, "There is no poll currently going on");
-    }else if(message.channel.name != undefined){
-        bot.sendMessage(message.channel, "You must dm JunkBot to vote");
-    }else if(!isNaN(vote) || vote > options.length){
-        bot.sendMessage(message.channel, "Pick which option you would like to vote for.");
-    }else if(!repeatVote){
-        bot.sendMessage(message.channel, "You voted for option " + (vote + 1));
-        alreadyVoted.push({voter: sender, vote: vote});
-        options[vote]++;
-    }else{
-        bot.sendMessage(message.channel, "You changed your vote to option " + (vote + 1));
-        //alreadyVoted.splice({voter: );
-        var prevVote = 0;
-        for(var j = 0; j < alreadyVoted.length; j++) {
-            if (alreadyVoted[j].voter == sender) {
-                prevVote = alreadyVoted[j].vote;
-                break;
+        var letter = args[0].toLowerCase();
+        var validLetter = false;
+        for(var i = 0; i < 26; i++) {
+            if(letter == String.fromCharCode(97 + i)) {
+                validLetter = true;
             }
         }
-        options[prevVote]--;
-        options[vote]++;
-    }
-};
-
-commands.endpoll = function(bot, message, args) {
-    var sender = message.author.id;
-    if(sender == pollStarter || sender == peeks) {
-        var pollResults = [];
-        for(var i = 0; i < options.length; i++) {
-            if(options[i] > 0)
-               pollResults.push("Option " + (i + 1) + " got " + options[i] + " votes");
-        }
-        if(pollResults.length == 0) {
-            bot.sendMessage(message.channel, "No one voted in this poll");
-            currentPoll = false;
+        if(!validLetter) {
+            bot.sendMessage(message.channel, "That is not a valid guess.");
         }else{
-            bot.sendMessage(message.channel, pollResults.join("\n"));
-            currentPoll = false;
+            var repeat = false;
+            for(var k = 0; k < missedLetters.length; k++) {
+                if(missedLetters[k] == letter)
+                    repeat = true;
+            }
+            if(!repeat) {
+                for(var j = 0; j < wordProgress.length; j++) {
+                    if(wordProgress[j] == letter)
+                        repeat = true;
+                }
+            }
+            if(repeat) {
+                bot.sendMessage(message.channel, "That letter was already guessed. Current missed letters are: " + missedLetters.join(", "));
+            }else{
+                var correct = false;
+                for(var l = 0; l < word.length; l++) {
+                    if(word[l] == letter) {
+                        correct = true;
+                        wordProgress.splice(l, 1, letter);
+                    }
+                }
+                if(correct) {
+                    if(wordProgress.indexOf("-") == -1) {
+                        bot.sendMessage(message.channel, "That letter is in the word!\nCurrent progress: " + wordProgress.join("") + "\nAmount of Mistakes: " + missedLetters.length + "\n You win!");
+                        wordProgress = [];
+                        missedLetters = [];
+                        gameStartHM = false;
+                    }else{
+                        bot.sendMessage(message.channel, "That letter is in the word!\nCurrent progress: " + wordProgress.join("") + "\nAmount of Mistakes: " + missedLetters.length);
+                    }
+                }else{
+                    if(missedLetters.length >= 7) {
+                        bot.sendMessage(message.channel, "That letter is not in the word!\nCurrent progress: " + wordProgress.join("") + "\nAmount of Mistakes: 8\nYou lose. The word was: " + word);
+                        wordProgress = [];
+                        missedLetters = [];
+                        gameStartHM = false;
+                    }else{
+                        missedLetters.push(letter);
+                        bot.sendMessage(message.channel, "That letter is not in the word!\nCurrent progress: " + wordProgress.join("") + "\nAmount of Mistakes: " + missedLetters.length);
+                    }
+                }
+            }
         }
     }
+    
 };
-*/
 
 commands.schedule = function(bot, message, args){
     var request = args[0];
@@ -986,7 +1095,5 @@ commands.schedule = function(bot, message, args){
         }
     });
 };
-
-//commands.impquiz
 
 module.exports = commands;

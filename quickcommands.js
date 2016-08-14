@@ -1,8 +1,8 @@
 /*global qc*/
 qc = {};
 
+//my id number so i can easily restrict certain commands to myself if need be
 var peeks = 150742441673097217;
-var junk = 161233186423177217;
 
 qc.nudes = function(bot, message, args){
     bot.sendMessage(message.channel, "https://github.com/Tac0pizza-z/JunkBot");
@@ -14,8 +14,10 @@ qc.toothbrush = function (bot, message, args) {
 
 qc.echo = function(bot, message, args) {
     if(args.length != 0) {
-        if((args[0].startsWith("?") || args[0].startsWith("!")) && message.author.id != peeks) {
+        if((args[0].startsWith("?") || args[0].startsWith("!") || args[0].startsWith("/")) && message.author.id != peeks) {
             bot.sendMessage(message.channel, "Nice try");
+        }else if(message.mentions.length != 0){
+            bot.sendMessage(message.channel, "You can't mention people with this command");
         }else{
             bot.sendMessage(message.channel, args.join(" "));
         }
@@ -25,16 +27,6 @@ qc.echo = function(bot, message, args) {
 qc.roll = function(bot, message, args) {
     var number = Math.floor(Math.random() * 6) + 1;
     bot.sendMessage(message.channel, "You rolled a " + number);
-};
-
-qc.russianroulette = function(bot, message, args) {
-    if (message.mentions.length == 0) {
-        bot.sendMessage(message.channel, "You need to tag people in the same message that you use **?russianroulette**");
-    }else{
-        var bullet = Math.floor(Math.random() * (message.mentions.length));
-        var dead = message.mentions[bullet];
-        bot.sendMessage(message.channel, dead + " is kill. Rest in spagetti never forgetti.");
-    }
 };
 
 qc.flip = function(bot, message, args) {
@@ -232,16 +224,6 @@ qc.word = function(bot, message, args) {
     }
 };
 
-qc.avatar = function(bot, message, args) {
-    if(message.mentions.length == 0) {
-        var sender = message.author;
-        bot.sendMessage(message.channel, sender.avatarURL);
-    }else{
-        var pic = message.mentions[0];
-        bot.sendMessage(message.channel, pic.avatarURL);
-    }
-};
-
 qc.quadratic = function(bot, message, args) {
     if(args[0] != undefined && args[1] != undefined && args[2] != undefined) {
         var a = parseInt(args[0], 10);
@@ -276,27 +258,6 @@ qc.mix = function(bot, message, args) {
     }
     var mix = shuffle(args);
     bot.sendMessage(message.channel, mix.join(" "));
-};
-
-qc.prime = function(bot, message, args) {
-    if(args[0] != undefined) {
-        var numb = parseInt(args[0], 10);
-        var sqrt = Math.floor(Math.sqrt(numb));
-        var prime = true;
-        if(!isNaN(numb)){
-            for(var i = 2; i <= sqrt; i++) {
-                if(sqrt % i == 0) {
-                    prime = false;
-                    break;
-                }
-            }
-            if(prime){
-                bot.sendMessage(message.channel, "Your number is prime");
-            }else{
-                bot.sendMessage(message.channel, "Your number is not prime");
-            }
-        }
-    }
 };
 
 qc.steam = function(bot, message, args){
@@ -431,6 +392,119 @@ qc.supermix = function(bot, message, args) {
         bot.sendMessage(message.channel, shuffle(letters).join(""));
     }else{
         bot.sendMessage(message.channel, "Put a message after using **?supermix**. Ex: **?supermix Hey, JunkBot!**");
+    }
+};
+
+qc.castle = function(bot, message, args) {
+    var height = 8;
+    var width = 5;
+    var block = "□";
+    var castle = [];
+    for(var i = 0; i < height; i++) {
+        castle.push([]);
+    }
+    for(var j = 0; j < width; j++) {
+        castle[0].push(block);
+    }
+    for(var k = 1; k < height; k++) {
+        for(var l = 0; l < width; l++) {
+            var rand = Math.random();
+            if(rand < .7 && castle[k - 1][l] == block) {
+                castle[k].push(block);
+            }else{
+                castle[k].push("   ");
+            }
+        }
+    }
+    var realCastle = [];
+    for(var p = 0; p < height; p++) {
+        realCastle.push(castle[p].join(""));
+    }
+    realCastle.reverse();
+    bot.sendMessage(message.channel, realCastle.join("\n"));
+};
+
+qc.array = function(bot, message, args) {
+    if(args.length != 0) {
+        if((args[0].startsWith("?") || args[0].startsWith("!")) && message.author.id != peeks) {
+            bot.sendMessage(message.channel, "Nice try");
+        }else{
+            bot.sendMessage(message.channel, "\"" + args.join("\", \"") + "\"");
+        }
+    }
+};
+
+qc.openpack = function(bot, message, args) {
+    var common = 0;
+    var rare = 0;
+    var epic = 0;
+    var legendary = 0;
+    for(var i = 0; i < 5; i++) {
+        var rand = Math.random();
+        if(i != 4) {
+            if(rand < .7165) {
+                common++;
+            }else if(rand < .9449) {
+                rare++;
+            }else if(rand < .9891) {
+                epic++;
+            }else{
+                legendary++;
+            }
+        }else{
+            if(rand < .9449) {
+                rare++;
+            }else if(rand < .9891) {
+                epic++;
+            }else{
+                legendary++;
+            }
+        }
+    }
+    if(epic == 0 && legendary == 0) {
+        bot.sendMessage(message.channel, "You opened " + common + " commons and " + rare + " rares");
+    }else if(legendary == 0) {
+        bot.sendMessage(message.channel, "You opened " + common + " commons, " + rare + " rares, and " + epic + " epics");
+    }else if(epic == 0) {
+        bot.sendMessage(message.channel, "You opened " + common + " commons, " + rare + " rares, and " + legendary + " legendaries");
+    }else{
+        bot.sendMessage(message.channel, "You opened " + common + " commons, " + rare + " rares, " + epic + " epics, and " + legendary + " legendaries");
+    }
+};
+
+qc.type = function(bot, message, args) {
+    bot.startTyping(message.channel);
+    setTimeout(function() {
+        if((args[0].startsWith("?") || args[0].startsWith("!")) && message.author.id != peeks) {
+            bot.sendMessage(message.channel, "Nice try");
+        }else{
+            bot.sendMessage(message.channel, args.join(" "));
+        }
+        bot.stopTyping(message.channel);
+    }, (message.content.length * 100));
+};
+
+qc.piglatin = function(bot, message, args) {
+    if(args.length != 0) {
+        var newSentence = [];
+        for(var i = 0; i < args.length; i++) {
+            var firstLetter = args[i][0];
+            var newWord = args[i].slice(1) + firstLetter + "ay";
+            newSentence.push(newWord);
+        }
+        bot.sendMessage(message.channel, newSentence.join(" "));
+    }
+};
+
+qc.stutter = function(bot, message, args) {
+    if(args.length != 0) {
+        var stutter = [];
+        var stutProb;
+        do{
+            stutter.push(args[0][0] + "-");
+            stutProb = Math.random();
+        }while(stutProb < .9);
+        bot.sendMessage(message.channel, stutter.join("") + args.join(" "));
     }
 };
 
